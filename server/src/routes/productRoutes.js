@@ -16,14 +16,17 @@ const router = express.Router();
 router.post(
     "/",
     protect,
-    upload.single("image"),
+    upload.array("images", 5),
     createProduct
 );
 
 router.get("/", getProducts);
+
+// Must sit above "/:id" or Express reads "myproducts" as an id.
 router.get("/myproducts", protect, getMyProducts);
+
 router.get("/:id", getProductById);
-router.put("/:id", protect, updateProduct);
+router.put("/:id", protect, upload.array("images", 5), updateProduct);
 router.delete("/:id", protect, deleteProduct);
 
 export default router;

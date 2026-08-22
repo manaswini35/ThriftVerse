@@ -1,21 +1,69 @@
 @import "tailwindcss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+/* Design direction: the inside of a garment. Denim indigo, bleached wash,
+   gold topstitch, and the woven care label that every second-hand item
+   still carries. Type is set like a care label too — mono, small, spaced. */
+@theme {
+  --color-ink: #14162b;
+  --color-ink-soft: #2a2e4d;
+  --color-denim: #35508f;
+  --color-denim-light: #6f8ac4;
+  --color-wash: #e4e9f5;
+  --color-bone: #faf9f6;
+  --color-stitch: #e0a32e;
+  --color-stamp: #ce1f5b;
+  --color-fade: #8b8fa6;
+
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
 }
 
-body {
-  background: #f5f5f5;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-bone);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* One focus style for the whole app, so keyboard users are never lost. */
+  :focus-visible {
+    outline: 2px solid var(--color-denim);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+@layer components {
+  /* The care label: a woven strip of mono micro-type. Used on product cards
+     and detail pages to carry size, condition and brand. */
+  .care-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
 
-button {
-  cursor: pointer;
+  /* Dashed topstitch, the way a seam is sewn. */
+  .stitch {
+    border: 1.5px dashed var(--color-denim-light);
+  }
+
+  .stitch-t {
+    border-top: 1.5px dashed var(--color-denim-light);
+  }
 }
