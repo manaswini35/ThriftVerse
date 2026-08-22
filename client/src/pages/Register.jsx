@@ -1,86 +1,122 @@
 import { useState } from "react";
-import api from "../services/api";
+import { Link, useNavigate } from "react-router-dom";
+import api, { errorText } from "../services/api";
+import { useAuth } from "../context/AuthContext";
+import { Alert, Button, Field, fieldClass } from "../components/ui";
 
 function Register() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const [name, setName] = useState("");
-
     const [email, setEmail] = useState("");
-
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState("buyer");
+    const [error, setError] = useState("");
+    const [busy, setBusy] = useState(false);
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    console.log("Button clicked!");
+        setError("");
 
-    try {
-        console.log("Before API call");
+        if (password.length < 6) {
+            return setError("Password must be at least 6 characters.");
+        }
 
-        const res = await api.post("/auth/register", {
-            name,
-            email,
-            password,
-        });
+        setBusy(true);
 
-        console.log("After API call");
-        console.log(res);
+        try {
+            const res = await api.post("/auth/register", {
+                name,
+                email,
+                password,
+                role,
+            });
 
-    }catch (error) {
-    console.log("Status:", error.response.status);
-    console.log("Response:", error.response.data);
+            // The server hands back a token on register, so there's no reason
+            // to make someone log in again immediately.
+            login(res.data.token, res.data.user);
 
-    alert(error.response.data.message);
-}
-};
+            navigate("/", { replace: true });
+        } catch (err) {
+            setError(errorText(err, "Could not register. Try again."));
+        } finally {
+            setBusy(false);
+        }
+    };
 
     return (
+        <div className="mx-auto max-w-md px-5 py-16">
+            <p className="care-label text-fade">Join the rack</p>
 
-        <div>
+            <h1 className="mt-2 font-display text-3xl font-extrabold">
+                Create an account
+            </h1>
 
-            <h1>Register</h1>
+            <form onSubmit={handleSubmit} className="stitch mt-8 space-y-5 bg-white p-6">
+                <Alert>{error}</Alert>
 
-            <form onSubmit={handleSubmit}>
+                <Field label="Name">
+                    <input
+                        type="text"
+                        required
+                        placeholder="Your name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className={fieldClass}
+                    />
+                </Field>
 
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
+                <Field label="Email">
+                    <input
+                        type="email"
+                        required
+                        autoComplete="email"
+                        placeholder="you@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={fieldClass}
+                    />
+                </Field>
 
-                <br /><br />
+                <Field label="Password">
+                    <input
+                        type="password"
+                        required
+                        minLength={6}
+                        autoComplete="new-password"
+                        placeholder="At least 6 characters"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={fieldClass}
+                    />
+                </Field>
 
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                <Field label="I'm here to">
+                    <select
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        className={fieldClass}
+                    >
+                        <option value="buyer">Buy</option>
+                        <option value="seller">Sell my own pieces</option>
+                    </select>
+                </Field>
 
-                <br /><br />
-
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <br /><br />
-
-                <button type="submit">
-
-                    Register
-
-                </button>
-
+                <Button type="submit" disabled={busy} className="w-full">
+                    {busy ? "Creating…" : "Create account"}
+                </Button>
             </form>
 
+            <p className="mt-6 text-center text-sm text-fade">
+                Already have an account?{" "}
+                <Link to="/login" className="text-denim underline">
+                    Log in
+                </Link>
+            </p>
         </div>
-
     );
-
 }
 
 export default Register;
