@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api, { errorText } from "../services/api";
 import { Alert, Button, Field, fieldClass } from "../components/ui";
 
-const CATEGORIES = ["tops", "bottoms", "dresses", "outerwear", "footwear", "accessories", "other"];
+const CATEGORIES = ["tops", "bottoms", "dresses", "outerwear", "footwear", "jewellery", "accessories", "other"];
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL", "free size"];
 const CONDITIONS = ["like new", "good", "fair"];
 

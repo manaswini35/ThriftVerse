@@ -1,6 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Button, Empty } from "./components/ui";
 
@@ -68,6 +69,8 @@ function App() {
 
                 <Route path="*" element={<NotFound />} />
             </Routes>
+
+            <Footer />
         </>
     );
 }

@@ -5,7 +5,7 @@ export function money(value) {
 // No width here on purpose — Home.jsx overrides it per filter (w-auto, w-24)
 // and two Tailwind width utilities in one class list fight each other.
 export const inputClass =
-  "border border-fade/40 bg-bone px-3 py-2 text-sm text-ink placeholder:text-fade focus:outline-none";
+  "rounded-lg border border-wash bg-bone px-3 py-2 text-sm text-ink transition placeholder:text-fade focus:border-denim-light focus:outline-none";
 
 export const fieldClass = `${inputClass} w-full`;
 
@@ -22,7 +22,7 @@ export function Field({ label, children }) {
 
 export function Button({ variant = "solid", className = "", ...props }) {
   const variants = {
-    solid: "bg-ink text-bone hover:bg-ink-soft",
+    solid: "bg-ink text-bone hover:bg-stamp",
     outline: "border-2 border-ink text-ink hover:bg-wash",
     danger: "border-2 border-stamp text-stamp hover:bg-stamp/10",
   };
@@ -30,7 +30,7 @@ export function Button({ variant = "solid", className = "", ...props }) {
   return (
     <button
       {...props}
-      className={`care-label px-5 py-2.5 transition disabled:cursor-not-allowed disabled:opacity-40 ${
+      className={`care-label rounded-full px-5 py-2.5 transition disabled:cursor-not-allowed disabled:opacity-40 ${
         variants[variant] || variants.solid
       } ${className}`}
     />
@@ -43,7 +43,7 @@ export function Tag({ children, tone = "wash" }) {
     stitch: "bg-stitch text-ink",
   };
   return (
-    <span className={`care-label px-2 py-1 ${tones[tone] || tones.wash}`}>
+    <span className={`care-label rounded-full px-2.5 py-1 ${tones[tone] || tones.wash}`}>
       {children}
     </span>
   );
@@ -61,7 +61,7 @@ export function Spinner({ label }) {
 export function Empty({ title, body, children }) {
   return (
     <div className="flex flex-col items-center gap-2 py-16 text-center">
-      <p className="font-display text-xl">{title}</p>
+      <p className="wordmark-sm text-2xl">{title}</p>
       {body && <p className="text-fade">{body}</p>}
       {children}
     </div>
@@ -77,7 +77,7 @@ export function Alert({ children, tone = "error" }) {
   };
 
   return (
-    <div className={`border-2 px-4 py-3 text-sm ${tones[tone] || tones.error}`}>
+    <div className={`rounded-xl border-2 px-4 py-3 text-sm ${tones[tone] || tones.error}`}>
       {children}
     </div>
   );

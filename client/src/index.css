@@ -2,7 +2,10 @@
 
 /* Design direction: the inside of a garment. Denim indigo, bleached wash,
    gold topstitch, and the woven care label that every second-hand item
-   still carries. Type is set like a care label too — mono, small, spaced. */
+   still carries. Type is set like a care label too — mono, small, spaced.
+
+   The warm half of the palette (rust, sage, cream) is the charity-shop
+   half: sun-faded cotton, wooden hangers, hand-written price tags. */
 @theme {
   --color-ink: #14162b;
   --color-ink-soft: #2a2e4d;
@@ -13,6 +16,10 @@
   --color-stitch: #e0a32e;
   --color-stamp: #ce1f5b;
   --color-fade: #8b8fa6;
+
+  --color-rust: #c9542f;
+  --color-sage: #6c8f6a;
+  --color-cream: #fff4e3;
 
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
@@ -66,4 +73,150 @@
   .stitch-t {
     border-top: 1.5px dashed var(--color-denim-light);
   }
+
+  /* ── The wordmark ────────────────────────────────────────────────────
+     The shop sign. Sized off the viewport so it fills the width of the
+     hero on any screen, and painted with the full palette so the brand
+     carries the colour rather than the layout having to. */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3.2rem, 15vw, 12rem);
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    /* Gold thread through rust and hot pink into a bright washed denim, then
+       back to gold so the loop never shows a seam. The blue is lifted well
+       above --color-denim-light: at this size the muted one reads as grey. */
+    background: linear-gradient(
+      100deg,
+      var(--color-stitch) 0%,
+      var(--color-rust) 24%,
+      var(--color-stamp) 48%,
+      #7aa8ff 72%,
+      var(--color-stitch) 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: drift 14s ease-in-out infinite;
+  }
+
+  /* Same treatment at heading scale, for section titles. */
+  .wordmark-sm {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(
+      100deg,
+      var(--color-rust),
+      var(--color-stamp) 45%,
+      var(--color-denim)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Warm light behind the hero, like a shop window at dusk. */
+  .hero-glow {
+    background:
+      radial-gradient(60rem 32rem at 8% -10%, rgba(224, 163, 46, 0.28), transparent 60%),
+      radial-gradient(48rem 30rem at 92% 0%, rgba(206, 31, 91, 0.24), transparent 62%),
+      radial-gradient(52rem 34rem at 50% 118%, rgba(53, 80, 143, 0.5), transparent 60%);
+  }
+
+  /* Woven twill, drawn rather than downloaded. */
+  .hero-weave {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgba(250, 249, 246, 0.6) 0 1px,
+        transparent 1px 9px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(250, 249, 246, 0.35) 0 1px,
+        transparent 1px 9px
+      );
+  }
+
+  /* The ticker strip that runs under the hero. */
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: slide 34s linear infinite;
+  }
+
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* Product cards and any other tile that should feel liftable. */
+  .lift {
+    transition:
+      transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1),
+      box-shadow 0.35s ease;
+  }
+
+  .lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 40px -24px rgba(20, 22, 43, 0.55);
+  }
+
+  /* A hand-written price sticker, rotated the way they always are. */
+  .price-tag {
+    font-family: var(--font-mono);
+    background: var(--color-cream);
+    border: 1.5px solid var(--color-ink);
+    box-shadow: 3px 3px 0 var(--color-ink);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.animate-blink {
+  animation: blink 1.8s ease-in-out infinite;
 }

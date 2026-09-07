@@ -3,8 +3,10 @@ import { useAuth } from "../context/AuthContext";
 import { useWishlist } from "../context/WishlistContext";
 
 const linkClass = ({ isActive }) =>
-    `care-label transition hover:text-stitch ${
-        isActive ? "text-stitch" : "text-bone/70"
+    `care-label relative py-1 transition hover:text-stitch ${
+        isActive
+            ? "text-stitch after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:bg-stitch"
+            : "text-bone/70"
     }`;
 
 function Navbar() {
@@ -20,10 +22,15 @@ function Navbar() {
     };
 
     return (
-        <nav className="sticky top-0 z-50 bg-ink text-bone">
-            <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4">
-                <Link to="/" className="font-display text-xl font-extrabold">
-                    ThriftVerse
+        <nav className="sticky top-0 z-50 border-b border-bone/10 bg-ink/95 text-bone backdrop-blur">
+            <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3.5">
+                <Link to="/" className="group flex items-baseline gap-2">
+                    <span className="wordmark-sm text-2xl sm:text-3xl">
+                        ThriftVerse
+                    </span>
+                    <span className="care-label hidden text-bone/40 transition group-hover:text-stitch sm:inline">
+                        est. pre-loved
+                    </span>
                 </Link>
 
                 <div className="flex items-center gap-5">
@@ -60,7 +67,7 @@ function Navbar() {
 
                             <Link
                                 to="/register"
-                                className="care-label bg-stitch px-4 py-2 text-ink transition hover:bg-white"
+                                className="care-label rounded-full bg-stitch px-4 py-2 text-ink shadow-[0_0_0_0_rgba(224,163,46,0.5)] transition hover:shadow-[0_0_22px_2px_rgba(224,163,46,0.45)]"
                             >
                                 Register
                             </Link>

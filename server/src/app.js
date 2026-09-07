@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import tryOnRoutes from "./routes/tryOnRoutes.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);//whenever we hit the /api/auth endpoint, it will be handled by the authRoutes router
 app.use("/api/products", productRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/virtual-tryon", tryOnRoutes);
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 

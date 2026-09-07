@@ -15,6 +15,7 @@ import Product from "./models/Product.js";
 import Review from "./models/Review.js";
 import Conversation from "./models/Conversation.js";
 import Message from "./models/Message.js";
+import CATALOG from "./data/catalog.js";
 
 // Free placeholder photos — no Cloudinary account needed just to look around.
 const photo = (seed) => `https://picsum.photos/seed/${seed}/900/1200`;
@@ -46,26 +47,6 @@ const ACCOUNTS = [
   },
 ];
 
-const LISTINGS = [
-  ["Faded Levi's 501 straight jeans", "Genuine 90s pair, honest fading at the knees and seat. Zip is smooth, no repairs anywhere. Sits high on the waist.", 1450, "bottoms", "L", "good", "Levi's"],
-  ["Oversized flannel overshirt", "Heavy brushed cotton in rust and charcoal. Works as a shirt or a light jacket. Barely worn.", 890, "outerwear", "XL", "like new", "Uniqlo"],
-  ["Cropped corduroy jacket", "Mustard corduroy, cropped at the waist. One tiny mark inside the cuff, invisible when worn.", 1200, "outerwear", "M", "good", ""],
-  ["Black cotton slip dress", "Simple bias-cut slip, mid length. Adjustable straps. Great base for layering.", 750, "dresses", "S", "like new", "Zara"],
-  ["Striped cotton tee", "Classic navy and cream breton stripe. Soft from washing but no holes or stretch at the neck.", 320, "tops", "M", "good", ""],
-  ["Leather derby shoes", "Brown leather, resoled once. Creased across the toe as leather does. Comfortable straight away.", 2100, "footwear", "L", "fair", "Clarks"],
-  ["Pleated midi skirt", "Deep green, falls just below the knee. Elastic waist. Never worn, tag still attached.", 640, "bottoms", "M", "like new", ""],
-  ["Chunky knit cardigan", "Cream cable knit with real horn buttons. Warm without being heavy.", 1100, "tops", "L", "good", ""],
-  ["Canvas tote bag", "Thick unbleached canvas, screen printed on one side. Holds a laptop easily.", 280, "accessories", "free size", "good", ""],
-  ["Wide-leg linen trousers", "Natural linen, drawstring waist. Wrinkles like linen should. Ideal for summer.", 980, "bottoms", "S", "like new", "H&M"],
-  ["Vintage band tee", "Single-stitch, properly thin and soft. Print is cracked in the way collectors want.", 1600, "tops", "M", "fair", ""],
-  ["Wool peacoat", "Navy melton wool, double breasted. Lining fully intact. Serious winter coat.", 2800, "outerwear", "L", "good", ""],
-  ["Silk scarf", "Hand-rolled edges, floral print in blues. Small pull on one corner, hidden when tied.", 450, "accessories", "free size", "fair", ""],
-  ["White canvas sneakers", "Cleaned and deodorised. Soles have wear but plenty of life left.", 700, "footwear", "M", "good", "Converse"],
-  ["Denim pinafore dress", "Mid-wash denim, front pockets, adjustable straps. Great over a tee.", 1050, "dresses", "M", "like new", ""],
-  ["Ribbed turtleneck", "Fine merino rib in dark plum. Holds its shape, no pilling.", 820, "tops", "S", "like new", ""],
-  ["Cargo utility trousers", "Olive ripstop with six working pockets. Hem taken up slightly by a tailor.", 940, "bottoms", "L", "good", ""],
-  ["Beaded shoulder bag", "Hand-beaded in blues and silver. Lining replaced last year. Party-sized, not everyday.", 1350, "accessories", "free size", "good", ""],
-];
 
 const REVIEWS = [
   [5, "Item was exactly as described and shipped the next morning. Would buy again without thinking about it."],
@@ -103,17 +84,10 @@ const run = async () => {
   console.log("Creating listings...");
 
   const products = await Product.create(
-    LISTINGS.map(([title, description, price, category, size, condition, brand], i) => ({
-      title,
-      description,
-      price,
-      category,
-      size,
-      condition,
-      brand,
-      images: [photo(`tv-${i}-a`), photo(`tv-${i}-b`)],
-      tryOnImage: photo(`tv-${i}-flat`),
+    CATALOG.map((item, i) => ({
+      ...item,
       seller: i % 2 === 0 ? meera._id : rohit._id,
+      // A couple of sold pieces so the sold state is visible on the grid.
       status: i === 4 || i === 12 ? "sold" : "available",
     }))
   );

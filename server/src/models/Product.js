@@ -29,6 +29,7 @@ const productSchema = new mongoose.Schema(
         "outerwear",
         "footwear",
         "accessories",
+        "jewellery",
         "other",
       ],
       default: "other",
