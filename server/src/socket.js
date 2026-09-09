@@ -8,7 +8,7 @@ let io = null;
 
 export const initSocket = (httpServer) => {
   io = new Server(httpServer, {
-    cors: { origin: "*" },
+    cors: { origin: process.env.CORS_ORIGIN || "*" },
   });
 
   // The token travels in the handshake rather than a header, because the
